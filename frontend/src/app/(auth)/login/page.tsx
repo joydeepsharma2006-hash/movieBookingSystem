@@ -18,14 +18,28 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      // Mock login for frontend setup verification
-      const mockUser = {
-        id: 'u_1',
-        name: 'Alex Johnson',
-        email: email || 'alex@example.com',
-        role: (email.includes('admin') ? 'ADMIN' : 'USER') as 'ADMIN' | 'USER',
-        createdAt: new Date().toISOString(),
-      };
+      // Retrieve temporarily registered users from localStorage
+      const storedUsersStr = localStorage.getItem('mock_users');
+      const storedUsers = storedUsersStr ? JSON.parse(storedUsersStr) : [];
+      
+      // Try to find a match
+      let mockUser = storedUsers.find((u: any) => u.email === email && u.password === password);
+      
+      // Fallback for admin or default Alex user if no one is registered
+      if (!mockUser) {
+        if (email.includes('admin')) {
+          mockUser = {
+            id: 'admin_1',
+            name: 'Admin',
+            email: email,
+            role: 'ADMIN',
+            createdAt: new Date().toISOString(),
+          };
+        } else {
+          // If no local registration found, throw error
+           throw new Error('User not found. Please register.');
+        }
+      }
       setAuth(mockUser, 'mock_jwt_token');
       document.cookie = 'cinemax_token=mock_jwt_token; path=/;';
       toast.success(`Welcome back, ${mockUser.name}!`);

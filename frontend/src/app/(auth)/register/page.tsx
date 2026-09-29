@@ -25,9 +25,17 @@ export default function RegisterPage() {
         name,
         email,
         phone,
+        password, // Storing password purely for mock login matching, do NOT do this in real app!
         role: 'USER' as const,
         createdAt: new Date().toISOString(),
       };
+      
+      // Store user temporarily in localStorage for mock login
+      const existingUsersStr = localStorage.getItem('mock_users');
+      const existingUsers = existingUsersStr ? JSON.parse(existingUsersStr) : [];
+      existingUsers.push(mockUser);
+      localStorage.setItem('mock_users', JSON.stringify(existingUsers));
+
       setAuth(mockUser, 'mock_jwt_token');
       document.cookie = 'cinemax_token=mock_jwt_token; path=/;';
       toast.success('Account created successfully!');

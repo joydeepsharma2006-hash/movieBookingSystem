@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
+const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:7000/api/v1';
 
 export const apiClient = axios.create({
   baseURL,
@@ -10,7 +10,6 @@ export const apiClient = axios.create({
   },
 });
 
-// Request interceptor to attach JWT token if available in localStorage/cookies
 apiClient.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined') {
@@ -24,7 +23,6 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor for unified error and 401 handling
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {

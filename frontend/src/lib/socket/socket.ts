@@ -4,7 +4,7 @@ let socket: Socket | null = null;
 
 export const getSocket = (): Socket => {
   if (!socket) {
-    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:5000';
+    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:7000';
     socket = io(wsUrl, {
       autoConnect: false,
       withCredentials: true,
